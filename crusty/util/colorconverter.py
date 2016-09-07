@@ -372,5 +372,4 @@ def hex2short(rgb):
 
 
 HEX2SHORT_DICT, SHORT2HEX_DICT = _create_dicts()
-print HEX2SHORT_DICT
 
