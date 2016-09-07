@@ -7,7 +7,7 @@ with open(join(dirname(__file__), 'crusty/VERSION'), 'rb') as f:
 setup(
     name='Crusty',
     version=version,
-    url='http://google.com',
+    url='https://github.com/mattstruble/crusty',
     description='A game engine for creating terminal games',
     long_description=open('README.rst').read(),
     author='Matt Struble',
