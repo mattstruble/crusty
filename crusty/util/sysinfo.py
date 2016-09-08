@@ -5,17 +5,18 @@
 # Author: Matt Struble
 # Date: Sep. 6 2016
 #---------------------------------------------------------------------
-from sys import platform as _platform
+import sys, os
 
-WINDOWS = 0
-LINUX   = 1
-MACOSX  = 2
-
-OSYSTEM = 0
-
-if _platform == "linux" or _platform == "linux2":
-    OSYSTEM = LINUX
-elif _platform == "darwin":
-    OSYSTEM = MACOSX
-elif _platform == "win32":
-    OSYSTEM = WINDOWS
+def supports_color():
+    """
+    Returns True if the running system's terminal supports color, and False
+    otherwise.
+    """
+    plat = sys.platform
+    supported_platform = plat != 'Pocket PC' and (plat != 'win32' or
+                                                  'ANSICON' in os.environ)
+    # isatty is not always implemented.
+    is_a_tty = hasattr(sys.stdout, 'isatty') and sys.stdout.isatty()
+    if not supported_platform or not is_a_tty:
+        return False
+    return True

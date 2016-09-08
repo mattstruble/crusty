@@ -7,44 +7,9 @@
 #---------------------------------------------------------------------
 
 import sys, re
-from sysinfo import *
+import sysinfo
 
-if OSYSTEM == WINDOWS:
-        # Windows default console is bad and only supports 16 colors
-        _CUBELEVELS = (0x00, 0x80, 0xff)
-        CLUT = [
-                # Original 8 colors
-                ('30', '000000'),
-                ('31', '800000'),
-                ('32', '008000'),
-                ('33', '808000'),
-                ('34', '000080'),
-                ('35', '800080'),
-                ('36', '008080'),
-                ('37', 'c0c0c0'),
-
-                # "Bright versions of colors
-                ('30;1', '808080'),
-                ('31;1', 'ff0000'),
-                ('32;1', '00ff00'),
-                ('33;1', 'ffff00'),
-                ('34;1', '0000ff'),
-                ('35;1', 'ff00ff'),
-                ('36;1', '00ffff'),
-                ('37;1', 'ffffff'),
-
-                # Approximation colors to match supported 16 colors  
-                ('31;1', 'ff8080'),
-                ('32;1', '80ff80'),
-                ('32;1', '80ff00'),
-                ('33;1', 'ff8000'),
-                ('34;1', '8080ff'),
-                ('35;1', 'ff0080'),
-                ('35', '8000ff'),
-                ('36;1', '00ff80'),
-                ('34;1', '0080ff'),
-        ]
-if OSYSTEM == LINUX:
+if sysinfo.supports_color():
         _CUBELEVELS = (0x00, 0x5f, 0x87, 0xaf, 0xd7, 0xff)
         CLUT = [  # color look-up table
         #    8-bit, RGB hex
@@ -313,7 +278,42 @@ if OSYSTEM == LINUX:
                 ('254', 'e4e4e4'),
                 ('255', 'eeeeee'),
         ]
+else:
+        # Windows default console is bad and only supports 16 colors
+        _CUBELEVELS = (0x00, 0x80, 0xff)
+        CLUT = [
+                # Original 8 colors
+                ('30', '000000'),
+                ('31', '800000'),
+                ('32', '008000'),
+                ('33', '808000'),
+                ('34', '000080'),
+                ('35', '800080'),
+                ('36', '008080'),
+                ('37', 'c0c0c0'),
 
+                # "Bright versions of colors
+                ('30;1', '808080'),
+                ('31;1', 'ff0000'),
+                ('32;1', '00ff00'),
+                ('33;1', 'ffff00'),
+                ('34;1', '0000ff'),
+                ('35;1', 'ff00ff'),
+                ('36;1', '00ffff'),
+                ('37;1', 'ffffff'),
+
+                # Approximation colors to match supported 16 colors  
+                ('31;1', 'ff8080'),
+                ('32;1', '80ff80'),
+                ('32;1', '80ff00'),
+                ('33;1', 'ff8000'),
+                ('34;1', '8080ff'),
+                ('35;1', 'ff0080'),
+                ('35', '8000ff'),
+                ('36;1', '00ff80'),
+                ('34;1', '0080ff'),
+        ]
+        
 _NUMERALS = '0123456789abcdefABCDEF'
 _HEXDEC = {v: int(v, 16) for v in (x+y for x in _NUMERALS for y in _NUMERALS)}
 _LOWERCASE, _UPPERCASE = 'x', 'X'
