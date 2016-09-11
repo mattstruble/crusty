@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-""" Handles terminal input. """
+""" Handles terminal input. Static class. """
 
 # Author: Matt Struble
 # Date: Sep. 10 2016
