@@ -34,7 +34,13 @@ class Input:
 
     @staticmethod
     def setKeyboardString(string):
-        """ Sets string composed of keyboard presses. """
+        """ Sets string composed of keyboard presses.
+
+            Parameters
+            ----------
+            string : String
+                String to replace keyboardString with.
+        """
         if not isinstance(string, basestring):
             raise TypeError("KeyboardString must be a string.")
 
@@ -47,7 +53,13 @@ class Input:
 
     @staticmethod
     def setKeyboardStringMaxLength(length):
-        """ Sets max keyboard string length. """
+        """ Sets max keyboard string length.
+
+            Parameters
+            ----------
+            length : int
+                Maximum length allowable for keyboard sring
+        """
         if not isinstance(length, int):
             raise TypeError("KeyboardStringMaxLength must be an int.")
 
@@ -57,7 +69,15 @@ class Input:
 
     @staticmethod
     def setGroup(name, *keys):
-        """ Groups the given inputs under the given name. """
+        """ Groups the given inputs under the given name.
+
+            Parameters
+            ----------
+            name : String
+                Name of group.
+            ...keys : int
+                List of input codes.
+        """
         if not isinstance(name, basestring):
             raise TypeError("Group name needs to be a string.")
 
@@ -68,7 +88,13 @@ class Input:
 
     @staticmethod
     def getGroup(name):
-        """ Returns a list of keys in the given group. """
+        """ Returns a list of keys in the given group.
+
+            Parameters
+            ----------
+            name : String
+                Name of group.
+        """
         if not isinstance(name, basestring):
              raise TypeError("Group name needs to be a string.")
 
@@ -76,7 +102,13 @@ class Input:
     
     @staticmethod
     def clearGroup(name):
-        """ Clears the group of inputs with the given name."""
+        """ Clears the group of inputs with the given name.
+
+            Parameters
+            ----------
+            name : String
+                Name of group.
+        """
         if not isinistance(name, basestring):
             raise TypeError("Group name needs to be a string.")
 
@@ -84,7 +116,13 @@ class Input:
 
     @staticmethod
     def clearGroups(*names):
-        """ Clears the groups with the given names. """
+        """ Clears the groups with the given names. 
+
+            Parameters
+            ----------
+            ...names : String
+                Names of groups to clear.
+        """
         if not all(isinstance(x, basestring) for x in names):
             raise TypeError("Group name needs to be a string.")
 
@@ -98,7 +136,13 @@ class Input:
 
     @staticmethod
     def down(key = -1):
-        """ Returns if the given input is down. -1 for any key. """
+        """ Returns if the given input is down.
+
+            Parameters
+            ----------
+            key : int
+                The input code, or -1 for any key.
+        """
         if not isinstance(key, int):
             raise TypeError("Key needs to be an int.")
 
@@ -115,7 +159,13 @@ class Input:
         
     @staticmethod
     def downGroup(name):
-        """ Returns if the given input group is down. """
+        """ Returns if the given input group is down. 
+
+            Parameters
+            ----------
+            name : String
+                Name of group.
+        """
         if not isinstance(name, basestring):
             raise TypeError("Group name needs to be a string.")
 
@@ -127,7 +177,13 @@ class Input:
 
     @staticmethod
     def pressed(key = -1):
-        """ Returns if the given input is pressed. -1 for any key. """
+        """ Returns if the given input is pressed. 
+
+            Parameters
+            ----------
+            key : int
+                The input code, or -1 for any key.
+        """
         if not isinstance(key, int):
             raise TypeError("Key needs to be an int.")
 
@@ -144,7 +200,13 @@ class Input:
 
     @staticmethod
     def pressedGroup(name):
-        """ Returns if the given input group is pressed. """
+        """ Returns if the given input group is pressed.
+
+            Parameters
+            ----------
+            name : String
+                Name of group.
+        """
         if not isinstance(name, basestring):
             raise TypeError("Group name needs to be a string.")
 
@@ -156,7 +218,13 @@ class Input:
 
     @staticmethod
     def pressedRepeat(key = -1):
-        """ Returns if the given input is pressed, allowing for repeats. -1 for any key. """
+        """ Returns if the given input is pressed, allowing for repeats. 
+
+            Parameters
+            ----------
+            key : int
+                The input code, or -1 for any key.
+        """
         if not isinstance(key, int):
             raise TypeError("Key needs to be an int.")
 
@@ -173,7 +241,13 @@ class Input:
 
     @staticmethod
     def pressedRepeatGroup(name):
-        """ Returns if the given input group is pressed, allowing for repeats. """
+        """ Returns if the given input group is pressed, allowing for repeats. 
+
+            Parameters
+            ----------
+            name : String
+                Name of group.
+        """
         if not isinstance(name, basestring):
             raise TypeError("Group name needs to be a string.")
 
@@ -185,7 +259,13 @@ class Input:
             
     @staticmethod
     def released(key = -1):
-        """ Returns if the given input is released. -1 for any key."""
+        """ Returns if the given input is released. 
+
+            Parameters
+            ----------
+            key : int
+                The input code, or -1 for any key.
+        """
         if not isinstance(key, int):
             raise TypeError("Key needs to be an int.")
 
@@ -202,7 +282,13 @@ class Input:
 
     @staticmethod
     def releasedGroup(name):
-        """ Returns if the given input group is released. """
+        """ Returns if the given input group is released. 
+
+            Parameters
+            ----------
+            name : String
+                Name of group.
+        """
         if not isinstance(name, basestring):
             raise TypeError("Group name needs to be a string.")
 

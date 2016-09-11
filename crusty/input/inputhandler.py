@@ -23,7 +23,15 @@ class InputHandler:
 
     @staticmethod
     def addInputListener(event, func):
-        """ Adds function call to event handler """
+        """ Adds function call to event handler
+
+            Parameters
+            ----------
+            event : int
+                Integer representation of event type.
+            func : function()
+                Callable function for event triggers.
+        """
         if not isinstance(event, int):
             raise TypeError("You must pass in a valid event type.")
 
