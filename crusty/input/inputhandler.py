@@ -53,10 +53,12 @@ class InputHandler:
 
         if key is not prev:
 
-            for keyDown in listeners[KeyboardEvent.KEY_DOWN]:
-                keyDown(key)
-
-            for keyUp in listeners[KeyboardEvent.KEY_UP]:
-                keyUp(prev)
+            if KeyboardEvent.KEY_DOWN in listeners:
+                for keyDown in listeners[KeyboardEvent.KEY_DOWN]:
+                    keyDown(key)
+                    
+            if KeyboardEvent.KEY_UP in listeners:
+                for keyUp in listeners[KeyboardEvent.KEY_UP]:
+                    keyUp(prev)
 
         InputHandler._previousInput = key
