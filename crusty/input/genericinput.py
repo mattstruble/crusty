@@ -9,7 +9,7 @@
 from keys import Keys
 from inputhandler import *
 
-class Input:
+class GenericInput(object):
 
     _active = False
     _waitState = [-1] * 256
