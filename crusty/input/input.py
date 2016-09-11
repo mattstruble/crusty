@@ -7,6 +7,7 @@
 #---------------------------------------------------------------------
 
 from keys import Keys
+from inputhandler import *
 
 class Input:
 
@@ -224,11 +225,14 @@ class Input:
         if not Input._active:
             Input.repeatTimeInitial = 32
             Input.repeatTimeRepeat = 10
+
+            InputHandler.addInputListener(KeyboardEvent.KEY_DOWN, Input._onKeyDown)
+            InputHandler.addInputListener(KeyboardEvent.KEY_UP, Input._onKeyUp)
+            
             Input._active = True
 
     @staticmethod
-    def update():
-        """ Updates input states. """
+    def _update():
         for i in range(0, 256):
             Input._oldState[i] = Input._keyState[i]
             if Input._keyState[i] == True:
