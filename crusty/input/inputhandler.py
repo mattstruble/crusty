@@ -4,6 +4,7 @@
 
 # Author: Matt Struble
 # Date: Sep. 10 2016
+# depricated see eventhandler
 #---------------------------------------------------------------------
 from msvcrt import getch
 
