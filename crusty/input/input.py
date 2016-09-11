@@ -6,12 +6,14 @@
 # Date: Sep. 10 2016
 #---------------------------------------------------------------------
 
+from keys import Keys
+
 class Input:
 
     _active = False
-    _waitState = []
-    _keyState = []
-    _oldState = []
+    _waitState = [-1] * 256
+    _keyState = [False] * 256
+    _oldState = [False] * 256
 
     _lastKey = -1
 
@@ -24,35 +26,35 @@ class Input:
     repeatTimeInitial = -1
     repeatTimeRepeat = -1
     
-    @classmethod
+    @staticmethod
     def getKeyboardString():
         """ Returns string composed of keyboard presses. """
-        return _keyboardString
+        return Input._keyboardString
 
-    @classmethod
+    @staticmethod
     def setKeyboardString(string):
         """ Sets string composed of keyboard presses. """
         if not isinstance(string, basestring):
             raise TypeError("KeyboardString must be a string.")
 
-        _keyboardString = string
+        Input._keyboardString = string
 
-    @classmethod
+    @staticmethod
     def getKeyboardStringMaxLength():
         """ Returns the max keyboard string length. """
-        return _keyboardStringMaxLength
+        return Input._keyboardStringMaxLength
 
-    @classmethod
+    @staticmethod
     def setKeyboardStringMaxLength(length):
         """ Sets max keyboard string length. """
         if not isinstance(length, int):
             raise TypeError("KeyboardStringMaxLength must be an int.")
 
-        _keyboardStringMaxLength = length
-        if( len(_keyboardString) > _keyboardStringMaxLength ):
-            _keyboardString = _keyboardString[:(len(_keyboardString) - _keyboardStringMaxLength)]
+        Input._keyboardStringMaxLength = length
+        if( len(Input._keyboardString) > Input._keyboardStringMaxLength ):
+           Input._keyboardString = Input._keyboardString[:(len(Input._keyboardString) - Input._keyboardStringMaxLength)]
 
-    @classmethod
+    @staticmethod
     def setGroup(name, *keys):
         """ Groups the given inputs under the given name. """
         if not isinstance(name, basestring):
@@ -61,25 +63,25 @@ class Input:
         if not all(isinstance(x, int) for x in keys):
             raise TypeError("Keys must be int.")
 
-        _groups[name] = list(keys)
+        Input._groups[name] = list(keys)
 
-    @classmethod
+    @staticmethod
     def getGroup(name):
         """ Returns a list of keys in the given group. """
         if not isinstance(name, basestring):
              raise TypeError("Group name needs to be a string.")
 
-        return _groups[name]
+        return Input._groups[name]
     
-    @classmethod
+    @staticmethod
     def clearGroup(name):
         """ Clears the group of inputs with the given name."""
         if not isinistance(name, basestring):
             raise TypeError("Group name needs to be a string.")
 
-        del _groups[name]
+        del Input._groups[name]
 
-    @classmethod
+    @staticmethod
     def clearGroups(*names):
         """ Clears the groups with the given names. """
         if not all(isinstance(x, basestring) for x in names):
@@ -88,14 +90,14 @@ class Input:
         for name in names:
             clearGroup(name)
 
-    @classmethod
+    @staticmethod
     def clearAllGroups():
         """ Clears all grouped input. """
-        _groups.clear()
+        Input._groups.clear()
 
-    @classmethod
-    def check(key = -1):
-        """ Checks if the given input is down. -1 for any key. """
+    @staticmethod
+    def down(key = -1):
+        """ Returns if the given input is down. -1 for any key. """
         if not isinstance(key, int):
             raise TypeError("Key needs to be an int.")
 
@@ -104,25 +106,25 @@ class Input:
 
         if( key == -1 ):
             for i in range(0, 256):
-                if keyAllowed(i) and _keyState[i] == True:
+                if Input._keyAllowed(i) and Input._keyState[i] == True:
                     return True
             return False
 
-        return keyAllowed(key) and _keyState[key] == True
+        return Input._keyAllowed(key) and Input._keyState[key] == True
         
-    @classmethod
-    def checkGroup(name):
-        """ Returns if the given input group is pressed. """
+    @staticmethod
+    def downGroup(name):
+        """ Returns if the given input group is down. """
         if not isinstance(name, basestring):
             raise TypeError("Group name needs to be a string.")
 
-        for key in _groups[name]:
-            if check(key):
+        for key in Input._groups[name]:
+            if down(key):
                 return True
             
         return False
 
-    @classmethod
+    @staticmethod
     def pressed(key = -1):
         """ Returns if the given input is pressed. -1 for any key. """
         if not isinstance(key, int):
@@ -133,25 +135,25 @@ class Input:
         
         if key == -1:
             for i in range(0, 256):
-                if( keyAllowed(i) and _keyState[i] == True and _oldState[i] == False):
+                if( Input._keyAllowed(i) and Input._keyState[i] == True and Input._oldState[i] == False):
                     return True
             return False
 
-        return ( keyAllowed(key) and _keyState[key] == True and _oldState[key] == False)
+        return ( Input._keyAllowed(key) and Input._keyState[key] == True and Input._oldState[key] == False)
 
-    @classmethod
+    @staticmethod
     def pressedGroup(name):
         """ Returns if the given input group is pressed. """
         if not isinstance(name, basestring):
             raise TypeError("Group name needs to be a string.")
 
-        for key in _groups[name]:
+        for key in Input._groups[name]:
             if pressed(key):
                 return True
 
         return False
 
-    @classmethod
+    @staticmethod
     def pressedRepeat(key = -1):
         """ Returns if the given input is pressed, allowing for repeats. -1 for any key. """
         if not isinstance(key, int):
@@ -162,25 +164,25 @@ class Input:
 
         if key == -1:
             for i in range(0, 256):
-                if ( keyAllowed(i) and ( ( _keyState[i] == True and _oldState[i] == False) or _waitState[i] == 0) ):
+                if ( Input._keyAllowed(i) and ( ( Input._keyState[i] == True and Input._oldState[i] == False) or Input._waitState[i] == 0) ):
                     return True
                 return False
 
-        return ( keyAllowed(i) and ( ( _keyState[key] == True and _oldState[key] == False) or _waitState[key] == 0) )
+        return ( Input._keyAllowed(i) and ( ( Input._keyState[key] == True and Input._oldState[key] == False) or Input._waitState[key] == 0) )
 
-    @classmethod
+    @staticmethod
     def pressedRepeatGroup(name):
         """ Returns if the given input group is pressed, allowing for repeats. """
         if not isinstance(name, basestring):
             raise TypeError("Group name needs to be a string.")
 
-        for key in _groups[name]:
+        for key in Input._groups[name]:
             if pressedRepeat(key):
                 return True
 
         return False
             
-    @classmethod
+    @staticmethod
     def released(key = -1):
         """ Returns if the given input is released. -1 for any key."""
         if not isinstance(key, int):
@@ -191,34 +193,85 @@ class Input:
 
         if key == -1:
             for i in range(0, 256):
-                if keyAllowed(i) and _keyState[i] == False and _oldState[i] == True:
+                if Input._keyAllowed(i) and Input._keyState[i] == False and Input._oldState[i] == True:
                     return True
             return False
 
-        return keyAllowed(key) and _keyState[key] == False and _oldState[key] == True
+        return Input._keyAllowed(key) and Input._keyState[key] == False and Input._oldState[key] == True
 
-    @classmethod
+    @staticmethod
     def releasedGroup(name):
+        """ Returns if the given input group is released. """
         if not isinstance(name, basestring):
             raise TypeError("Group name needs to be a string.")
 
-        for key in _groups[name]:
+        for key in Input._groups[name]:
             if released(key):
                 return True
 
         return False
 
-    @classmethod
+    @staticmethod
     def clearInput():
         """ Clears all input. """
         for i in range(0, 256):
-            _oldState[i] = _keyState[i] = False
-            _waitState[i] = -1
+            Input._oldState[i] = Input._keyState[i] = False
+            Input._waitState[i] = -1
 
+    @staticmethod
     def activate():
-        if not _activate:
-            repeatTimeInitial = 32
-            repeatTimeRepeat = 10
-            _activate = True
+        """ Activates the input manager. """
+        if not Input._active:
+            Input.repeatTimeInitial = 32
+            Input.repeatTimeRepeat = 10
+            Input._active = True
 
-    
+    @staticmethod
+    def update():
+        """ Updates input states. """
+        for i in range(0, 256):
+            Input._oldState[i] = Input._keyState[i]
+            if Input._keyState[i] == True:
+                if Input._waitState[i] == -1:
+                    Input._waitState[i] = Input.repeatTimeInitial
+                elif Input._waitState[i] == 0:
+                    Input._waitState[i] = Input.repeatTimeRepeat
+                else:
+                    --Input._waitState[i]
+            else:
+                Input._waitState[i] = -1
+
+    @staticmethod
+    def _onKeyDown(keyCode):
+        if not isinstance(keyCode, int):
+            TypeError("Keycode needs to be an int")
+
+        if not 0 < keyCode < 256:
+            return
+
+        Input._lastKey = keyCode
+        Input._keyState[keyCode] = True
+
+        if keyCode == Keys.BACK:
+            Input._keyboardString = Input._keyboardString[:-1]
+        elif keyCode > 31 and keyCode is not 127:
+            Input._keyboardString += chr(keyCode)
+            if len(Input._keyboardString) > Input._keyboardStringMaxLength:
+                Input._keyboardString = Input._keyboardString[1:]
+
+    @staticmethod
+    def _onKeyUp(keyCode):
+        if not isinstance(keyCode, int):
+            TypeError("Keycode needs to be an int")
+
+        if not 0 < keyCode < 256:
+            return
+
+        Input._lastKey = keyCode
+        Input._keyState[keyCode] = False
+
+    @staticmethod
+    def _keyAllowed(key):
+        if Input.keyboardEnabled:
+            return True
+        return False
