@@ -241,7 +241,7 @@ class Input:
                 elif Input._waitState[i] == 0:
                     Input._waitState[i] = Input.repeatTimeRepeat
                 else:
-                    --Input._waitState[i]
+                    Input._waitState[i] -= 1
             else:
                 Input._waitState[i] = -1
 
