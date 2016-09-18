@@ -5,8 +5,9 @@
 # Author: Matt Struble
 # Date: Aug. 31 2016
 #---------------------------------------------------------------------
+from util.enum import Enum
 
-class Keys:
+class Keys(Enum):
 
     ANY = -1
     
