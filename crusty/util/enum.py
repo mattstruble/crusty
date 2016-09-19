@@ -10,7 +10,7 @@ class Enum(type):
 
     def __init__(self, name, bases, dict):
         for base in bases:
-            if base.__class__ is not EnumMetaClass:
+            if base.__class__ is not Enum:
                 raise TypeError, "Enumeration base class must be enumeration"
         bases = filter(lambda x: x is not Enum, bases)
         self.__name__ = name
