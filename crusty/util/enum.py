@@ -12,8 +12,10 @@ EXCLUDE_LIST = [
     '__doc__'
     ]
 
+class EnumError(AttributeError): pass
+
 class Enum(object):
-    """ Allows enumeration within Python 2.7.
+    """ A user-defined type that consists of a set of named constants that are known as enumerators.
 
     Examples:
         >>> class Key(Enum):
@@ -56,14 +58,52 @@ class Enum(object):
         False
     """      
         
-    def __new__(self, name, *sequential, **named):
-        """ Creates automatic enumerated values for inline declarations. """
-        enums = dict(zip(sequential, range(len(sequential))), **named)
+    def __new__(self, name, *args, **kwargs):
+        """ Creates automatic enumerated values for inline declarations.
+
+            Takes in an unspecified length list of strings and/or keyword arguments
+            to transform into enumerated values. The basic arguments will be
+            automatically assigned (int) values ranging from 0..N based upon their order and
+            keyword arguments will maintain their passed in values.
+            
+            Parameters
+            ----------
+                name : string
+                    Name of the enumeration class to be created. Must start with an alpha value.
+                *args : string
+                    List of arguments to turn into enumerated values.
+                **kwargs
+                    List of keyword arguments to turn into enumerated values.
+
+            Returns
+            -------
+                Enum: A generated enumerated type based upon inputted parameters.
+
+            Raises
+            ------
+                TypeError
+                    If name or *args are not string
+                EnumError
+                    If *args begin with a non-alpha value.
+            
+        """
+        if not isinstance(name, basestring):
+            raise TypeError("Enum name must be a string.")
+        if not all(isinstance(arg, basestring) for arg in args):
+            raise TypeError("Enum unnamed arguments must all be strings.")
+        if not all(arg[0].isalpha() for arg in args):
+            raise EnumError("Enum arguments must start with an alpha character.")
+        
+        enums = dict(zip(args, range(len(args))), **kwargs)
         return type(name, (Enum, ), enums)
     
     class __metaclass__(type):
         def __init__(self, *members):
-            """ Automatically creates enumeration based upon class member variables. """
+            """ Automatically creates enumeration based upon class member variables.
+
+                Iterates through the object's member list and replaces each member variable
+                with an enumerated instance of that variable. 
+            """
             if self.__name__ == 'Enum':
                 return
 
@@ -74,9 +114,9 @@ class Enum(object):
                 
        
         def __iter__(self):
-            """ Return a generator for enum values.
+            """ Returns a generator for enum values.
 
-            When iterating the enum, only return class members whose
+            When iterating the enum, only returns class members whose
             value are instances of EnumInstance.
             """
             return (self.__dict__[item] for item in self.__dict__ if isinstance(self.__dict__[item], EnumInstance))
@@ -115,7 +155,16 @@ class EnumInstance(object):
         return "%s.%s" % (self.__classname, self.__enumname)
 
     def __cmp__(self, other):
-        """ Handles class, EnumInstance, and value comparisons for EnumInstance."""
+        """ Handles class, EnumInstance, and value comparisons for EnumInstance.
+
+            If comparing to Class object it checks to see if the object's name matches
+            the enum classname.
+
+            If comparing to EnumInstance object it checks to see if the object's name
+            matches the enum classname.
+
+            Otherwise it compares the stored value with the value passed in.
+        """
         if inspect.isclass(other) and issubclass(other, Enum):
             return cmp(self.__classname, other.__name__)
         elif isinstance(other, EnumInstance):
