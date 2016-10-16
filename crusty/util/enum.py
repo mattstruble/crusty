@@ -1,70 +1,60 @@
-
 #! /usr/bin/env python
 
 """ Class to allow enumeration within Python 2.7. """
 
 # Author: Matt Struble
-# Date: Sep. 19 2016
+# Date: Oct. 15 2016
 #---------------------------------------------------------------------
-class Enum(type):
+import inspect
 
-    def __init__(self, name, bases, dict):
-        for base in bases:
-            if base.__class__ is not Enum:
-                raise TypeError, "Enumeration base class must be enumeration"
-        bases = filter(lambda x: x is not Enum, bases)
-        self.__name__ = name
-        self.__bases__ = bases
-        self.__dict = {}
-        for key, value in dict.items():
-            self.__dict[key] = EnumInstance(name, key, value)
+class Enum(object):
+    class EnumError(TypeError): pass #base exception class
+    
+    class __metaclass__(type):
+        def __init__(self, *members):
+            if self.__name__ == 'Enum':
+                return
+            self.__dict = {}
+            for item in self.__dict__:
+                eInstance = EnumInstance(self.__name__, item, self.__dict__.get(item))
+                setattr(self, item, eInstance)
 
-    def __getattr__(self, name):
-        if name == '__members__':
-            return self.__dict.keys()
+        #def __setattr__(self, name, value):
+        #    if name in self.__dict__:
+        #        raise self.EnumError("Can't change %s.%s" % (self.__name__, name))
+       
+        def __iter__(self):
+            for item in self.__dict__:
+                yield self.__dict__[item]
+        
+        def __repr__(self):
+            s = self.__name__
+            if self.__bases__:
+                s = s + '(' + ', '.join(map(lambda x : x.__name__, self.__bases__)) + ')'
 
-        try:
-            return self.__dict[name]
-        except KeyError:
-            for base in self.__bases__:
-                try:
-                    return getattr(base, name)
-                except AttributeError:
-                    continue
-
-        raise AttributeError, name
-
-    def __repr__(self):
-        s = self.__name__
-        if self.__bases__:
-            s = s + '(' + string.join(map(lambda x: x.__name__,
-                                          self.__bases__), ", ") + ')'
-        if self.__dict:
-            list = []
-            for key, value in self.__dict.items():
-                list.append("%s: %s" % (key, int(value)))
-            s = "%s: {%s}" % (s, string.join(list, ", "))
-        return s
+            return s
 
 
-class EnumInstance:
+class EnumInstance(object):
 
     def __init__(self, classname, enumname, value):
+        self.__name__ = classname
         self.__classname = classname
         self.__enumname = enumname
         self.__value = value
-
-    def __int__(self):
-        return self.__value
+        self.value = value;
 
     def __repr__(self):
         return "EnumInstance(%r, %r, %r)" % (self.__classname,
                                              self.__enumname,
                                              self.__value)
-
+                    
     def __str__(self):
         return "%s.%s" % (self.__classname, self.__enumname)
 
     def __cmp__(self, other):
-        return cmp(self.__value, int(other))
+        if inspect.isclass(other) and issubclass(other, Enum):
+            return cmp(self.__classname, other.__name__)
+        
+        return cmp(self.__value, other)
 
