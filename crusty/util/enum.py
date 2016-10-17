@@ -7,12 +7,47 @@
 #---------------------------------------------------------------------
 import inspect
 
-EXCLUDE_LIST = [
-    '__module__',
-    '__doc__'
-    ]
-
 class EnumError(AttributeError): pass
+
+class _meta_enum(type):
+    def __init__(cls, cls_name, cls_bases, cls_dict):
+        """ Automatically creates enumeration based upon classes dictionary.
+
+            Iterates through the object's member list and replaces each member variable
+            with an enumerated instance of that variable. 
+        """
+        if cls_name == 'Enum':
+            return
+
+        for item in cls_dict:
+            if item[0].isalpha(): # Only enumerate 'public' variables
+                eInstance = EnumInstance(cls_name, item, cls_dict.get(item))
+                setattr(cls, item, eInstance)
+
+        cls._initialized = True
+
+    def __setattr__(cls, attr, value):
+        """ Raises EnumError if attempting to change an attribute at runtime. """
+        if hasattr(cls, '_initialized'):
+            raise EnumError("type object '%s' is an enumeration and cannot be modified at runtime." % cls.__name__)
+
+        super(_meta_enum, cls).__setattr__(attr, value)
+
+       
+    def __iter__(self):
+        """ Returns a generator for enum values.
+
+        When iterating the enum, only returns class members whose
+        value are instances of EnumInstance.
+        """
+        return (self.__dict__[item] for item in self.__dict__ if isinstance(self.__dict__[item], EnumInstance))
+        
+    def __repr__(self):
+        s = self.__name__
+        if self.__bases__:
+            s = s + '(' + ', '.join(map(lambda x : x.__name__, self.__bases__)) + ')'
+
+        return s
 
 class Enum(object):
     """ A user-defined type that consists of a set of named constants that are known as enumerators.
@@ -33,30 +68,37 @@ class Enum(object):
         True
         >>> Key.A in Key
         True
+        >>> for key in Key: print key
+        Key.A
+        Key.B
+        Key.C
+        >>> Key.C - Key.B
+        1
         
 
-        >>> test = Enum('Test', 'A', 'B', C=4)
+        >>> Test = Enum('Test', 'A', 'B', C=4)
 
-        >>> print test.A
+        >>> print Test.A
         Test.A
-        >>> test.A.value
+        >>> Test.A.value
         0
-        >>> test.B.value
+        >>> Test.B.value
         1
-        >>> test.C.value
+        >>> Test.C.value
         4
-        >>> test.A in test
+        >>> Test.A in Test
         True
-        >>> test.A == test
+        >>> Test.A == Test
         True
 
-        >>> test.A == Key.A
+        >>> Test.A == Key.A
         False
-        >>> test.A in Key
+        >>> Test.A in Key
         False
-        >>> Key.A in test
+        >>> Key.A in Test
         False
     """      
+    __metaclass__ = _meta_enum
         
     def __new__(self, name, *args, **kwargs):
         """ Creates automatic enumerated values for inline declarations.
@@ -97,36 +139,7 @@ class Enum(object):
         enums = dict(zip(args, range(len(args))), **kwargs)
         return type(name, (Enum, ), enums)
     
-    class __metaclass__(type):
-        def __init__(self, *members):
-            """ Automatically creates enumeration based upon class member variables.
-
-                Iterates through the object's member list and replaces each member variable
-                with an enumerated instance of that variable. 
-            """
-            if self.__name__ == 'Enum':
-                return
-
-            for item in self.__dict__:
-                if item not in EXCLUDE_LIST:
-                    eInstance = EnumInstance(self.__name__, item, self.__dict__.get(item))
-                    setattr(self, item, eInstance)
-                
-       
-        def __iter__(self):
-            """ Returns a generator for enum values.
-
-            When iterating the enum, only returns class members whose
-            value are instances of EnumInstance.
-            """
-            return (self.__dict__[item] for item in self.__dict__ if isinstance(self.__dict__[item], EnumInstance))
-        
-        def __repr__(self):
-            s = self.__name__
-            if self.__bases__:
-                s = s + '(' + ', '.join(map(lambda x : x.__name__, self.__bases__)) + ')'
-
-            return s
+   
 
 
 class EnumInstance(object):
@@ -145,6 +158,14 @@ class EnumInstance(object):
         self.__enumname = enumname
         self.__value = value
         self.value = value;
+        self._initialized = True
+
+    def __setattr__(self, value, attr):
+        """ Raises EnumError if attempting to change an attribute at runtime. """
+        if hasattr(self, '_initialized'):
+            raise EnumError("type object '%s' is an enumeration and cannot be modified at runtime." % self.__classname)
+
+        self.__dict__[value] = attr
 
     def __repr__(self):
         return "EnumInstance(%r, %r, %r)" % (self.__classname,
@@ -153,6 +174,21 @@ class EnumInstance(object):
                     
     def __str__(self):
         return "%s.%s" % (self.__classname, self.__enumname)
+
+    def __int__(self):
+        return int(self.__value)
+
+    def __float__(self):
+        return float(self.__value)
+
+    def __long__(self):
+        return long(self.__value)
+
+    def __oct__(self):
+        return oct(self.__value)
+
+    def __hex__(self):
+        return hex(self.__value)
 
     def __cmp__(self, other):
         """ Handles class, EnumInstance, and value comparisons for EnumInstance.
@@ -170,3 +206,89 @@ class EnumInstance(object):
         elif isinstance(other, EnumInstance):
             return cmp(self.__classname, other.__name__)
         return cmp(self.__value, other)
+
+    ## Left operand arithmetic operations
+
+    def __add__(self, other):
+        return self.__value + other
+
+    def __sub__(self, other):
+        return self.__value - other
+
+    def __mul__(self, other):
+        return self.__value * other
+
+    def __div__(self, other):
+        return self.__value / other
+
+    def __floordiv__(self, other):
+        return self.__value // other
+
+    def __mod__(self, other):
+        return self.__value % other
+
+    def __divmod__(self, other):
+        return divmod(self.__value, other)
+
+    def __pow__(self, other, modulo=None):
+        return pow(self.__value, other, modulo)
+
+    def __lshift__(self, other):
+        return self.__value << other
+
+    def __rshift__(self, other):
+        return self.__value >> other
+
+    def __and__(self, other):
+        return self.__value & other
+
+    def __xor__(self, other):
+        return self.__value ^ other
+
+    def __or__(self, other):
+        return self.__value | other
+
+    ## Right operand arithmetic operations
+
+    def __radd__(self, other):
+        return other + self.__value
+
+    def __rsub__(self, other):
+        return other - self.__value
+
+    def __rmul__(self, other):
+        return other * self.__value
+
+    def __rdiv__(self, other):
+        return other / self.__value
+
+    def __rfloordiv__(self, other):
+        return other // self.__value
+
+    def __rmod__(self, other):
+        return other % self.__value
+
+    def __rdivmod__(self, other):
+        return divmod(other, self.__value)
+
+    def __rpow__(self, other, modulo=None):
+        return pow(other, self.__value, modulo)
+
+    def __rlshift__(self, other):
+        return other << self.__value
+
+    def __rrshift__(self, other):
+        return other >> self.__value
+
+    def __rand__(self, other):
+        return other & self.__value
+
+    def __rxor__(self, other):
+        return other ^ self.__value
+
+    def __ror__(self, other):
+        return other | self.__value
+
+    
+
+    
