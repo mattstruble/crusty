@@ -74,6 +74,7 @@ class Enum(object):
         Key.C
         >>> Key.C - Key.B
         1
+        (also works for: +, *, /, //, %, divmod(), pow(), **, <<, >>, &, ^, |)
         
 
         >>> Test = Enum('Test', 'A', 'B', C=4)
