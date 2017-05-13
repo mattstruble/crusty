@@ -1,4 +1,3 @@
-======
 Crusty
 ======
 
@@ -16,4 +15,9 @@ Requirements
 ============
 
 * Python 2.7
-* Works on Linux, Windows, Mac OSX
+* Works on Windows
+
+Plans
+======
+
+* Linux and MacOS support
