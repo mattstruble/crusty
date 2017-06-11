@@ -1,10 +1,11 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 
-""" Class for handling colors """
-
+# Copyright (c) 2016 Matt Struble. All Rights Reserved. 
+#
+# Use is subject to license terms.
+#
 # Author: Matt Struble
 # Date: Aug. 31 2016
-#---------------------------------------------------------------------
 from colorconverter import *
 
 class MetaColor(type):

@@ -1,13 +1,15 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 
-""" Convert values between RGB hex codes and xterm-256 color codes. """
-
+# Copyright (c) 2016 Matt Struble. All Rights Reserved. 
+#
+# Use is subject to license terms.
+#
 # Author: Matt Struble
 # Date: Aug. 31 2016
-#---------------------------------------------------------------------
-
 import sys, re
 import sysinfo
+
+""" Convert values between RGB hex codes and xterm-256 color codes. """
 
 if sysinfo.supports_color():
         _CUBELEVELS = (0x00, 0x5f, 0x87, 0xaf, 0xd7, 0xff)

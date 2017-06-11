@@ -1,15 +1,17 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 
-""" Handles initialization and core game loop. """
-
+# Copyright (c) 2016 Matt Struble. All Rights Reserved. 
+#
+# Use is subject to license terms.
+#
 # Author: Matt Struble
 # Date: Aug. 31 2016
-#---------------------------------------------------------------------
 import time, os
 from graphics.graphicsdevice import GraphicsDevice
 
 class Game: #{
-
+    """ Handles initialization and core game loop. """
+    
     FPS = 30.0
     SEC_PER_FRAME = 1.0/FPS
 
