@@ -6,12 +6,6 @@
 #
 # Author: Matt Struble
 # Date: Sep. 1 2016
-
-
-
-# Author: Matt Struble
-# Date: 
-#---------------------------------------------------------------------
 import os, sys
 
 import colorama
