@@ -83,7 +83,13 @@ venv/
 ENV/
 
 # Spyder project settings
-.spyderproject
+*.spyderproject
 
 # Rope project settings
-.ropeproject
+*.ropeproject
+
+# Komodo project settings 
+*.komodoproject
+
+# NetBeans project settings
+nbproject/
