@@ -15,7 +15,6 @@ This project is mostly being worked on for fun to try and see how much I can acc
 * Python 2.7
 * Works on Windows
 
-Plans
-======
+## Plans
 
 * Linux and MacOS support
