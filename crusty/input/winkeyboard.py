@@ -1,12 +1,12 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 
-""" Generates hooks and listens for windows keyboard events. """
-
+# Copyright (c) 2016 Matt Struble. All Rights Reserved. 
+#
+# Use is subject to license terms.
+# 
 # Author: Matt Struble
 # Date: Sep. 11 2016
 # Code adapted from: https://github.com/boppreh/keyboard/
-#---------------------------------------------------------------------
-
 import ctypes
 from ctypes import wintypes
 from keyboardevent import KeyboardEvent
@@ -25,7 +25,7 @@ def listen(handler):
 		Processes a low level Windows keyboard event.
 		"""
 		event = KeyboardEvent(event_types[wParam], lParam[0] & 0xFFFFFFFF, 
-                                        lParam[1], lParam[2] == 32, lParam[3])
+                                        lParam[0], lParam[1], lParam[2] == 32, lParam[3])
 		handler(event)
 		#Be nice, return next hook
 		return windll.user32.CallNextHookEx(hook_id, nCode, wParam, lParam)

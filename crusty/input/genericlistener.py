@@ -1,11 +1,12 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 
-""" Handles Keyboard events. """
-
+# Copyright (c) 2016 Matt Struble. All Rights Reserved. 
+#
+# Use is subject to license terms.
+# 
 # Author: Matt Struble
 # Date: Sep. 11 2016
 # Code adapted from: https://github.com/boppreh/keyboard/
-#---------------------------------------------------------------------
 from threading import Thread
 import traceback
 import functools

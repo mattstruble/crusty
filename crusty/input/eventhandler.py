@@ -1,11 +1,11 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 
-""" Handles system level events. Static class. """
-
+# Copyright (c) 2016 Matt Struble. All Rights Reserved. 
+#
+# Use is subject to license terms.
+#
 # Author: Matt Struble
 # Date: Sep. 11 2016
-#---------------------------------------------------------------------
-
 import time, platform
 from keyboardevent import KeyboardEvent
 from genericlistener import GenericListener
@@ -26,7 +26,8 @@ class KeyboardListener(GenericListener):
 kbListener = KeyboardListener()
 
 class EventHandler(object):
-
+    """ Handles system level events. Static class. """
+    
     _eListeners = {}
 
     @staticmethod

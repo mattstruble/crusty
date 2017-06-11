@@ -1,10 +1,11 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 
-""" Provides common use variables and functionality """
-
+# Copyright (c) 2016 Matt Struble. All Rights Reserved. 
+#
+# Use is subject to license terms.
+#
 # Author: Matt Struble
 # Date: Sep. 6 2016
-#---------------------------------------------------------------------
 import sys, os
 
 def supports_color():

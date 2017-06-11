@@ -1,10 +1,11 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 
-""" Contains keycode constants. """
-
+# Copyright (c) 2016 Matt Struble. All Rights Reserved. 
+#
+# Use is subject to license terms.
+# 
 # Author: Matt Struble
 # Date: Aug. 31 2016
-#---------------------------------------------------------------------
 from util.enum import Enum
 
 class Keys(Enum):

@@ -1,16 +1,17 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 
-""" Processes user input. Static class. """
-
+# Copyright (c) 2016 Matt Struble. All Rights Reserved. 
+#
+# Use is subject to license terms.
+#
 # Author: Matt Struble
 # Date: Sep. 10 2016
-#---------------------------------------------------------------------
-
 from keys import Keys
 from inputhandler import *
 
 class GenericInput(object):
-
+    """ Processes user input. Static class. """
+    
     _active = False
     _waitState = [-1] * 256
     _keyState = [False] * 256

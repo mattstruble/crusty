@@ -1,9 +1,16 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 
-""" Sets up the graphics environment for drawing to terminal """
-
+# Copyright (c) 2016 Matt Struble. All Rights Reserved. 
+#
+# Use is subject to license terms.
+#
 # Author: Matt Struble
 # Date: Sep. 1 2016
+
+
+
+# Author: Matt Struble
+# Date: 
 #---------------------------------------------------------------------
 import os, sys
 
@@ -11,7 +18,8 @@ import colorama
 from util.color import Color
 
 class GraphicsDevice: #{
-
+    """ Sets up the graphics environment for drawing to terminal """
+    
     def __init__(self, w, h, title): #{
         
         colorama.init()

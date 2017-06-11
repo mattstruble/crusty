@@ -1,11 +1,12 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 
-""" Handles terminal input. Static class. """
-
+# Copyright (c) 2016 Matt Struble. All Rights Reserved. 
+#
+# Use is subject to license terms.
+# 
 # Author: Matt Struble
 # Date: Sep. 10 2016
 # depricated see eventhandler
-#---------------------------------------------------------------------
 from msvcrt import getch
 
 class KeyboardEvent:

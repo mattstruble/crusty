@@ -1,10 +1,11 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 
-""" Class to allow enumeration within Python 2.7. """
-
+# Copyright (c) 2016 Matt Struble. All Rights Reserved. 
+#
+# Use is subject to license terms.
+#
 # Author: Matt Struble
 # Date: Oct. 15 2016
-#---------------------------------------------------------------------
 import inspect
 
 class EnumError(AttributeError): pass
