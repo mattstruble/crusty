@@ -6,7 +6,9 @@
 # 
 # Author: Matt Struble
 # Date: Sep. 11 2016
-class KeyboardEvent(object):
+from crusty.event import Event
+
+class KeyboardEvent(Event):
 
     KEY_DOWN = 0
     KEY_UP = 1
@@ -17,4 +19,5 @@ class KeyboardEvent(object):
         self.keycode = keycode
         self.scan = scancode
         self.alt = is_alt
-        self.time = now() if time is None else time
+        
+        super(KeyboardEvent, self).__init__(time)
