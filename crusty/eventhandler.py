@@ -6,24 +6,7 @@
 #
 # Author: Matt Struble
 # Date: Sep. 11 2016
-import time, platform
-from keyboardevent import KeyboardEvent
-from genericlistener import GenericListener
-
-if platform.system() == 'Windows':
-    import winkeyboard as oskeyboard
-
-class KeyboardListener(GenericListener):
-    def callback(self, event):
-        if not event.scan:
-            return
-
-        return self.invokeHandlers(event)
-
-    def listen(self):
-        oskeyboard.listen(self.callback)
-
-kbListener = KeyboardListener()
+from event import Event
 
 class EventHandler(object):
     """ Handles system level events. Static class. """
@@ -32,8 +15,7 @@ class EventHandler(object):
 
     @staticmethod
     def initialize():
-        kbListener.addHandler(EventHandler.eventHandler)
-        kbListener.start()
+        pass
 
     @staticmethod
     def eventHandler(event):
