@@ -26,9 +26,6 @@ class EventHandler(object):
     @staticmethod
     def addEventListener(event, func):
         
-        if not isinstance(event, Event):
-            raise TypeError("event must be a valid Event")
-        
         if not callable(func):
             raise TypeError("func must be a callable type")
         
@@ -39,9 +36,6 @@ class EventHandler(object):
             
     @staticmethod
     def removeEventListener(event, func):
-        
-        if not isinstance(event, Event):
-            raise TypeError("event must be a valid Event")
         
         if not callable(func):
             raise TypeError("func must be a callable type")
