@@ -141,8 +141,6 @@ class Enum(object):
         enums = dict(zip(args, range(len(args))), **kwargs)
         return type(name, (Enum, ), enums)
     
-   
-
 
 class EnumInstance(object):
     """ Instance class for each enumerated value within Enum.
@@ -206,7 +204,10 @@ class EnumInstance(object):
         if inspect.isclass(other) and issubclass(other, Enum):
             return cmp(self.__classname, other.__name__)
         elif isinstance(other, EnumInstance):
-            return cmp(self.__classname, other.__name__)
+            if self.__classname == other.__name__:
+                return cmp(self.value, other.value)
+            else:
+                return cmp(self.__classname, other.__name__)
         return cmp(self.__value, other)
 
     ## Left operand arithmetic operations
@@ -291,6 +292,3 @@ class EnumInstance(object):
     def __ror__(self, other):
         return other | self.__value
 
-    
-
-    
