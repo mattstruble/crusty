@@ -11,7 +11,8 @@ from keys import Keys
 from eventhandler import EventHandler
 
 class Keyboard(object):
-
+    """ Static class """
+    
     Enabled = False
 
     _string = ""
@@ -29,19 +30,23 @@ class Keyboard(object):
     def activate():
         if not Keyboard.Enabled:
             Keyboard._repeatTimeInitial = 32
-            Keybaord._repeatTimeRepeat = 10
+            Keyboard._repeatTimeRepeat = 10
             
             EventHandler.addEventListener(KeyboardEvent.KEY_DOWN, Keyboard._onKeyDown)
-            EventHandler.addEventListener(KeyBoardEvent.KEY_UP, Keyboard._onKeyUp)
+            EventHandler.addEventListener(KeyboardEvent.KEY_UP, Keyboard._onKeyUp)
+            
+            Keyboard.Enabled = True
             
     @staticmethod
     def deactivate():
         if Keyboard.Enabled:
             Keyboard._repeatTimeInitial = -1
-            Keybaord._repeatTimeRepeat = -1
+            Keyboard._repeatTimeRepeat = -1
             
             EventHandler.removeEventListener(KeyboardEvent.KEY_DOWN, Keyboard._onKeyDown)
-            EventHandler.removeEventListener(KeyBoardEvent.KEY_UP, Keyboard._onKeyUp)        
+            EventHandler.removeEventListener(KeyboardEvent.KEY_UP, Keyboard._onKeyUp)
+            
+            Keyboard.Enabled = False
 
     @staticmethod
     def getKeyboardString():
@@ -114,15 +119,15 @@ class Keyboard(object):
     
     @staticmethod
     def released(key = Keys.ANY):
-        if key != Keys:
+        if not key in Keys:
             raise TypeError("key needs to be a Key")
-
-        if key == -1:
+        
+        if key == Keys.ANY:
             for i in range(0, 256):
                 if Keyboard._keyAllowed(i) and Keyboard._keyState[i] == False and Keyboard._oldState[i] == True:
                     return True
             return False
-
+        
         return Keyboard._keyAllowed(key) and Keyboard._keyState[key.value] == False and Keyboard._oldState[key.value] == True
     
     @staticmethod
@@ -133,9 +138,12 @@ class Keyboard(object):
     
     
     @staticmethod
-    def _keyAllowed(Key):
-        if key != Keys:
-            raise TypeError("key needs to be a Key")
+    def _keyAllowed(key):
+        if isinstance(key, int):
+            key = Keys.getKey(key)
+            
+        if not key in Keys:
+            return False
         
         return Keyboard.Enabled
     
@@ -157,6 +165,20 @@ class Keyboard(object):
         if isinstance(event, KeyboardEvent):
             Keyboard._lastKey = event.key
             Keyboard._keyState[event.key] = False
+            
+    @staticmethod
+    def _update():
+        for i in range(0, 256):
+            Keyboard._oldState[i] = Keyboard._keyState[i]
+            if Keyboard._keyState[i] == True:
+                if Keyboard._waitState[i] == -1:
+                    Keyboard._waitState[i] = Keyboard._repeatTimeInitial
+                elif Keyboard._waitState[i] == 0:
+                    Keyboard._waitState[i] = Keyboard._repeatTimeRepeat
+                else:
+                    Keyboard._waitState[i] -= 1
+            else:
+                Keyboard._waitState[i] = -1
 
     """
         TODO:

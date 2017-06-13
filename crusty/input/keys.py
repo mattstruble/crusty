@@ -139,3 +139,10 @@ class Keys(Enum):
     FSLASH3 = 220
     RBRACK = 221
     APOSTRAPHE = 222
+    
+    def getKey(self, val):
+        for key in Keys:
+            if key == val:
+                return key
+        
+        return None
