@@ -44,8 +44,8 @@ class EventHandler(object):
             if func in EventHandler._eListeners[event]:
                 EventHandler._eListeners[event].remove(func)
             
-            if len(EventHandler._eListeners[event] == 0):
-                EventHandler._eListeners.remove(event)
+            if len(EventHandler._eListeners[event]) == 0:
+                del EventHandler._eListeners[event]
 
 
 
