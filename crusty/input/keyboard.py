@@ -27,7 +27,7 @@ class Keyboard(object):
     _repeatTimeRepeat = -1
     
     @staticmethod
-    def activate():
+    def initialize():
         if not Keyboard.Enabled:
             Keyboard._repeatTimeInitial = 32
             Keyboard._repeatTimeRepeat = 10
@@ -38,7 +38,7 @@ class Keyboard(object):
             Keyboard.Enabled = True
             
     @staticmethod
-    def deactivate():
+    def terminate():
         if Keyboard.Enabled:
             Keyboard._repeatTimeInitial = -1
             Keyboard._repeatTimeRepeat = -1

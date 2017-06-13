@@ -21,10 +21,6 @@ class Game: #{
         self.gd = GraphicsDevice(w, h, title)
         self.run()
     
-    
-    def keyEvent(self, e):
-        print e
-        
     def run(self): 
         self._initialize()
         self._loadContent()
@@ -32,11 +28,11 @@ class Game: #{
     
 
     def _initialize(self): 
+        Keyboard.initialize()
         self.running = True
-        Keyboard.activate()
     
-    def _quit(self):
-        Keyboard.deactivate()
+    def _terminate(self):
+        Keyboard.terminate()
         self.running = False
 
     def _loadContent(self): 
@@ -51,27 +47,23 @@ class Game: #{
             dt = current - previous
             previous = current
             
-            self._update(dt)
             self._processInput()
+            self._update(dt)
             self._render()
 
             sleepTime = self.SEC_PER_FRAME - ( time.time() - current )
             if sleepTime > 0: 
                 time.sleep( sleepTime )
-            
-        
-    
+
                  
     def _processInput(self):
-        Keyboard._update()
-        
+        if Keyboard.released(Keys.ESCAPE):
+            self._terminate()
 
     def _update(self, dt): 
-        if Keyboard.released(Keys.ESCAPE):
-            self._quit()
+        Keyboard._update()
     
-
-    def _render(self): #{
+    def _render(self): 
         # Clear terminal buffer
         pass #os.system('cls' if os.name == 'nt' else 'clear')
-    #}
+    
