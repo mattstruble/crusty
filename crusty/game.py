@@ -8,8 +8,7 @@
 # Date: Aug. 31 2016
 import time, os
 from graphics.graphicsdevice import GraphicsDevice
-from input.keyboard import Keyboard
-from input.keys import Keys
+from input.keyboard import Keyboard, Keys
 
 class Game: #{
     """ Handles initialization and core game loop. """
