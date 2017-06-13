@@ -90,6 +90,7 @@ ENV/
 
 # Komodo project settings 
 *.komodoproject
+.komodotools/
 
 # NetBeans project settings
 nbproject/
