@@ -13,7 +13,7 @@ This project is mostly being worked on for fun to try and see how much I can acc
 ## Requirements
 
 * Python 2.7
-* Works on Windows
+* Windows
 
 ## Plans
 
