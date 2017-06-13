@@ -8,6 +8,8 @@
 # Date: Aug. 31 2016
 import time, os
 from graphics.graphicsdevice import GraphicsDevice
+from input.keyboard import Keyboard
+from input.keys import Keys
 
 class Game: #{
     """ Handles initialization and core game loop. """
@@ -15,57 +17,61 @@ class Game: #{
     FPS = 30.0
     SEC_PER_FRAME = 1.0/FPS
 
-    def __init__(self, w='1000', h='300', title='Game'): #{
-
+    def __init__(self, w='1000', h='300', title='Game'): 
         self.gd = GraphicsDevice(w, h, title)
+        self.run()
+    
+    
+    def keyEvent(self, e):
+        print e
         
-        print "ran game" 
-        raw_input('')
-    #}
-        
-    def run(): #{
-        _initialize()
-        _loadContent()
-        loop()
-    #}
+    def run(self): 
+        self._initialize()
+        self._loadContent()
+        self._loop()
+    
 
-    def _initialize(): #{
+    def _initialize(self): 
+        self.running = True
+        Keyboard.activate()
+    
+    def _quit(self):
+        Keyboard.deactivate()
+        self.running = False
+
+    def _loadContent(self): 
         pass
-    #}
+    
 
-    def _loadContent(): #{
-        pass
-    #}
-
-    def _loop(): #{
+    def _loop(self): 
         previous = time.time()
 
-        while True: #{
+        while self.running: 
             current = time.time()
             dt = current - previous
             previous = current
             
-            _processInput()
-            _update(dt)
-            _render()
+            self._update(dt)
+            self._processInput()
+            self._render()
 
-            sleepTime = SEC_PER_FRAME - ( time.time() - current )
-            if sleepTime > 0: #{
+            sleepTime = self.SEC_PER_FRAME - ( time.time() - current )
+            if sleepTime > 0: 
                 time.sleep( sleepTime )
-            #}
-        #}
-    #}
+            
+        
+    
                  
-    def _processInput(): #{
-        pass
-    #}
+    def _processInput(self):
+        Keyboard._update()
+        
 
-    def _update(dt): #{
-        pass
-    #}
+    def _update(self, dt): 
+        if Keyboard.released(Keys.ESCAPE):
+            self._quit()
+    
 
-    def _render(): #{
+    def _render(self): #{
         # Clear terminal buffer
-        os.system('cls' if os.name == 'nt' else 'clear')
-        pass
+        pass #os.system('cls' if os.name == 'nt' else 'clear')
     #}
