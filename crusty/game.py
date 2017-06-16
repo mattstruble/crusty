@@ -8,7 +8,7 @@
 # Date: Aug. 31 2016
 import time, os
 from graphics.graphicsdevice import GraphicsDevice
-from input.keyboard import Keyboard, Keys
+from inputs import Keyboard, Keys
 
 class Game: #{
     """ Handles initialization and core game loop. """
@@ -26,7 +26,7 @@ class Game: #{
         self._loop()
     
 
-    def _initialize(self): 
+    def _initialize(self):
         Keyboard.initialize()
         self.running = True
     
@@ -64,5 +64,6 @@ class Game: #{
     
     def _render(self): 
         # Clear terminal buffer
-        pass #os.system('cls' if os.name == 'nt' else 'clear')
+        #os.system('cls' if os.name == 'nt' else 'clear')
+        print Keyboard.getKeyboardString()
     

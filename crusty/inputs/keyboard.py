@@ -54,7 +54,7 @@ class Keyboard(object):
         return Keyboard._string
 
     @staticmethod
-    def setKeyboardString(string):
+    def setKeyboardString(string = ""):
         """ Sets string composed of recent keyboard presses.
 
             Parameters
@@ -106,7 +106,7 @@ class Keyboard(object):
     
     @staticmethod
     def pressed(key = Keys.ANY):
-        if key != Keys:
+        if not key in Keys:
             raise TypeError("key needs to be a Key")
         
         if key == Keys.ANY:

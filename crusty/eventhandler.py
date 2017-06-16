@@ -28,11 +28,11 @@ class EventHandler(object):
         
         if not callable(func):
             raise TypeError("func must be a callable type")
-        
+
         if event in EventHandler._eListeners:
             EventHandler._eListeners[event].append(func)
         else:
-            EventHandler._eListeners[event] = [func]
+            EventHandler._eListeners[event] = [func]         
             
     @staticmethod
     def removeEventListener(event, func):

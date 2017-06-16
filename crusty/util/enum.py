@@ -19,11 +19,12 @@ class _meta_enum(type):
         """
         if cls_name == 'Enum':
             return
-
+        
         for item in cls_dict:
-            if item[0].isalpha(): # Only enumerate 'public' variables
-                eInstance = EnumInstance(cls_name, item, cls_dict.get(item))
-                setattr(cls, item, eInstance)
+            if type(cls_dict.get(item)) != staticmethod: # preserve static methods
+                if item[0].isalpha(): # Only enumerate 'public' variables
+                    eInstance = EnumInstance(cls_name, item, cls_dict.get(item))
+                    setattr(cls, item, eInstance)
 
         cls._initialized = True
 
@@ -41,7 +42,7 @@ class _meta_enum(type):
         When iterating the enum, only returns class members whose
         value are instances of EnumInstance.
         """
-        return (self.__dict__[item] for item in self.__dict__ if isinstance(self.__dict__[item], EnumInstance))
+        return (self.__dict__[item] for item in self.__dict__ if not callable(item) and isinstance(self.__dict__[item], EnumInstance))
         
     def __repr__(self):
         s = self.__name__

@@ -140,7 +140,8 @@ class Keys(Enum):
     RBRACK = 221
     APOSTRAPHE = 222
     
-    def getKey(self, val):
+    @staticmethod
+    def getKey(val):
         for key in Keys:
             if key == val:
                 return key
