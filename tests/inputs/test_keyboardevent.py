@@ -19,6 +19,6 @@ class TestKeyboardEventCase(TestCase):
 
         self.assertEqual(KeyboardEvent.KEY_DOWN, kbe.etype)
         self.assertEqual(Keys.A, kbe.key)
-        
-        kbe = kbe = KeyboardEvent(KeyboardEvent.KEY_DOWN, Keys.A, Keys.A, 0, False, time)
+
+        kbe = KeyboardEvent(KeyboardEvent.KEY_DOWN, Keys.A, Keys.A, 0, False, time)
         self.assertEqual(kbe.time, time)

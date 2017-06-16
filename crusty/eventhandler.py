@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright (c) 2016 Matt Struble. All Rights Reserved. 
+# Copyright (c) 2016 Matt Struble. All Rights Reserved.
 #
 # Use is subject to license terms.
 #
@@ -10,7 +10,7 @@ from event import Event
 
 class EventHandler(object):
     """ Handles system level events. Static class. """
-    
+
     _eListeners = {}
 
     @staticmethod
@@ -25,27 +25,31 @@ class EventHandler(object):
 
     @staticmethod
     def addEventListener(event, func):
-        
+
         if not callable(func):
             raise TypeError("func must be a callable type")
 
         if event in EventHandler._eListeners:
-            EventHandler._eListeners[event].append(func)
+            if not func in EventHandler._eListeners[event]:
+                EventHandler._eListeners[event].append(func)
         else:
-            EventHandler._eListeners[event] = [func]         
-            
+            EventHandler._eListeners[event] = [func]
+
     @staticmethod
     def removeEventListener(event, func):
-        
+
         if not callable(func):
             raise TypeError("func must be a callable type")
-        
+
         if event in EventHandler._eListeners:
             if func in EventHandler._eListeners[event]:
                 EventHandler._eListeners[event].remove(func)
-            
+
             if len(EventHandler._eListeners[event]) == 0:
                 del EventHandler._eListeners[event]
 
-
-
+    @staticmethod
+    def removeAllListeners():
+        for event in EventHandler._eListeners.keys():
+            for func in EventHandler._eListeners[event]:
+                EventHandler.removeEventListener(event, func)
