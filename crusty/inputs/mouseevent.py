@@ -7,7 +7,7 @@
 # Author: Matt Struble
 # Date: Jun. 16 2017
 from event import Event
-from enum import Enum
+from util.enum import Enum
 
 class MouseButton(Enum):
     LEFT = "LEFT"
