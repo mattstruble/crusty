@@ -4,17 +4,24 @@ from setuptools import setup, find_packages
 with open(join(dirname(__file__), 'crusty/VERSION'), 'rb') as f:
     version = f.read().decode('ascii').strip()
 
+install_require = []
+tests_require = ['mock']
+
+
 setup(
-    name='Crusty',
+    name='crusty',
     version=version,
     url='https://github.com/mattstruble/crusty',
     description='A game engine for creating terminal games',
-    long_description=open('README.rst').read(),
+    long_description=open('README.md').read(),
     author='Matt Struble',
     maintainer='Matt Struble',
     maintainer_email='matt@mattstruble.com',
     license='MIT',
     packages=find_packages(exclude=('tests', 'tests.*')),
+    test_suite='tests',
+    test_requires=tests_require,
+    install_requires=install_require,
     include_package_data=True,
     zip_safe=False,
     entry_points={
@@ -35,5 +42,3 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules'
     ],
 )
-    
-    
