@@ -18,5 +18,5 @@ class EventTestCase(TestCase):
         self.assertTrue(abs(ev.time - time).microseconds < 100)
         self.assertEqual(Event.DEFAULT, ev.etype)
 
-        ev = Event(Event.DEFAULT)
+        ev = Event(Event.DEFAULT, time)
         self.assertEqual(ev.time, time)
